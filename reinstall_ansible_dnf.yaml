@@ -1,0 +1,186 @@
+- name: Install VScode
+  hosts: localhost
+  connection: local 
+  become: true
+  become_user: root
+  tasks:
+    - name: Dependencies installation
+      apt:
+        update_cache: true
+        name:
+          - wget
+          - gpg
+          - apt-transport-https
+        state: latest
+
+    - name: update system and install code
+      apt:
+        update_cache: true
+        name: code
+        state: latest
+
+- name: install java8, java11
+  hosts: localhost
+  connection: local 
+  become: true
+  become_user: root
+  tasks:
+    - name: installation of openjdk-8
+      apt:
+        name: openjdk-8-jdk
+        install_recommends: true
+
+    - name: installation of openjdk-11
+      apt:
+        name: openjdk-11-jdk
+        install_recommends: true
+
+- name: install python-is-python3
+  hosts: localhost
+  connection: local 
+  become: true
+  become_user: root
+  tasks:
+    - name: installation of python-is-python3 package
+      apt:
+        name: python-is-python3
+        state: latest
+
+- name: terraform install
+  hosts: localhost
+  connection: local 
+  become: true
+  become_user: root
+  tasks: 
+    - name: requirements install
+      apt:
+        name: 
+          - software-common-properties
+          - gpg
+    
+    - name: ansible ppa add
+
+- name: install spotify
+  hosts: localhost
+  connection: local 
+  become: true
+  become_user: root
+  tasks:
+    - name: add pubkey and add to apt-key
+      ansible.builtin.apt_key:
+        keyserver: keyserver.ubuntu.com 
+        id: f9a211976ed662f00e59361e5e3c45d7b312c643
+        state: present
+
+    - name: add repo to sources.list.d
+      ansible.builtin.apt_repository:
+        repo: deb http://repository.spotify.com stable non-free
+        state: present
+    
+    - name: install spotify client
+      apt:
+        name: spotify-client
+        update_cache: yes
+
+- name: Signal installation
+  hosts: localhost
+  connection: local 
+  become: true
+  become_user: root
+  tasks:
+    - name: install Signal signing key
+      ansible.builtin.shell: |
+        wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg
+        
+        cat signal-desktop-keyring.gpg | sudo tee -a /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
+
+        echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' | sudo tee -a /etc/apt/sources.list.d/signal-xenial.list
+    
+    - name: install client application
+      apt: 
+        name: signal-desktop
+        update_cache: yes
+
+
+
+- name: other installations
+  hosts: localhost
+  connection: local 
+  become: yes
+  become_user: root
+  tasks: 
+    - name: install discord 
+      ansible.builtin.apt_key:
+        deb: https://discord.com/api/download?platform=linux&format=deb
+
+    - name: all installations
+      apt:
+        update_cache: yes
+        name: 
+          - htop
+          - steam
+          - wine
+          - neofetch
+          - lutris
+          - keepassxc
+          - qpdfview
+          - nvtop
+          - snapd
+          - gamemoderun
+          - mangohud
+          - k4dirstat
+          - vlc
+          - grsync
+          - tree
+          - lolcat
+
+- name: snap and flatpack installations
+  hosts: localhost
+  connection: local 
+  become: yes
+  become_user: root
+  tasks: 
+    - name: flutter installation
+      apt: 
+        - curl
+        - file
+        - git
+        - unzip
+        - which
+        - xz-utils
+        - zip
+        - libglu1-mesa
+    
+    - name: snap fluttes install
+      ansible.builtin.shell: |
+        sudo snap install flutter --classic
+
+        flutter doctor -v
+
+    - name: download and extract android studio
+      ansible.builtin.unarchive:
+        src: https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2021.2.1.15/android-studio-2021.2.1.15-linux.tar.gz
+        dest: /home/nikkie/
+        creates: /home/nikkie/android-studio
+        remote_src: yes
+
+
+- name: virtualization software
+  hosts: localhost
+  connection: local 
+  become: yes
+  become_user: root
+  tasks:
+    - name: kvm requirements install
+      apt:
+        - bridge-utils
+        - cpu-checker
+        - libvirt-clients
+        - libvirt-daemon
+        - qemu 
+        - qemu-kvm
+    
+    - name: virt-manager install
+      apt: 
+        name: virt-manager
+        state: latest
