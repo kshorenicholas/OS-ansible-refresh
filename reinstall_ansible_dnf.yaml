@@ -1,20 +1,33 @@
+- name: build tools installation
+  hosts: localhost
+  connection: local
+  become: true
+  become_user: root
+  tasks:  
+    - name: signal development tools
+      ansible.builtin.dnf:
+        name:
+          - '@Development tools'
+          - g++
+          - npm
+          - git-lfs
+
 - name: Install VScode
   hosts: localhost
   connection: local 
   become: true
   become_user: root
   tasks:
-    - name: Dependencies installation
-      apt:
-        update_cache: true
-        name:
-          - wget
-          - gpg
-          - apt-transport-https
-        state: latest
+    - name: import key
+      ansible.builtin.dnf_key:
+        state: present
+        key: https://packages.microsoft.com/keys/microsoft.asc
+
+    - name: vscode install script
+      ansible.builtin.raw: sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
 
     - name: update system and install code
-      apt:
+      ansible.builtin.dnf:
         update_cache: true
         name: code
         state: latest
@@ -26,12 +39,12 @@
   become_user: root
   tasks:
     - name: installation of openjdk-8
-      apt:
+      ansible.builtin.dnf:
         name: openjdk-8-jdk
         install_recommends: true
 
     - name: installation of openjdk-11
-      apt:
+      ansible.builtin.dnf:
         name: openjdk-11-jdk
         install_recommends: true
 
@@ -42,7 +55,7 @@
   become_user: root
   tasks:
     - name: installation of python-is-python3 package
-      apt:
+      ansible.builtin.dnf:
         name: python-is-python3
         state: latest
 
@@ -53,7 +66,7 @@
   become_user: root
   tasks: 
     - name: requirements install
-      apt:
+      ansible.builtin.dnf:
         name: 
           - software-common-properties
           - gpg
@@ -78,7 +91,7 @@
         state: present
     
     - name: install spotify client
-      apt:
+      ansible.builtin.dnf:
         name: spotify-client
         update_cache: yes
 
@@ -97,7 +110,7 @@
         echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' | sudo tee -a /etc/apt/sources.list.d/signal-xenial.list
     
     - name: install client application
-      apt: 
+      ansible.builtin.dnf: 
         name: signal-desktop
         update_cache: yes
 
@@ -114,7 +127,7 @@
         deb: https://discord.com/api/download?platform=linux&format=deb
 
     - name: all installations
-      apt:
+      ansible.builtin.dnf:
         update_cache: yes
         name: 
           - htop
@@ -141,7 +154,7 @@
   become_user: root
   tasks: 
     - name: flutter installation
-      apt: 
+      ansible.builtin.dnf: 
         - curl
         - file
         - git
@@ -172,7 +185,7 @@
   become_user: root
   tasks:
     - name: kvm requirements install
-      apt:
+      ansible.builtin.dnf:
         - bridge-utils
         - cpu-checker
         - libvirt-clients
@@ -181,6 +194,6 @@
         - qemu-kvm
     
     - name: virt-manager install
-      apt: 
+      ansible.builtin.dnf: 
         name: virt-manager
         state: latest
