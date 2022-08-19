@@ -48,17 +48,6 @@
         name: java-11-openjdk
         install_recommends: true
 
-- name: install python-is-python3
-  hosts: localhost
-  connection: local 
-  become: true
-  become_user: root
-  tasks:
-    - name: installation of python-is-python3 package
-      ansible.builtin.dnf:
-        name: python-is-python3
-        state: latest
-
 - name: terraform install
   hosts: localhost
   connection: local 
