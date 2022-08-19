@@ -24,7 +24,7 @@
         key: https://packages.microsoft.com/keys/microsoft.asc
 
     - name: vscode install script
-      ansible.builtin.raw: sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+      ansible.builtin.shell: sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
 
     - name: update system and install code
       ansible.builtin.dnf:
@@ -56,9 +56,7 @@
   tasks: 
     - name: requirements install
       ansible.builtin.dnf:
-        name: 
-          - software-common-properties
-          - gpg
+        name: dnf-plugins-core
     
     - name: ansible ppa add
 
