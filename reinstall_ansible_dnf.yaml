@@ -58,7 +58,14 @@
       ansible.builtin.dnf:
         name: dnf-plugins-core
     
-    - name: ansible ppa add
+    - name: add repo to dnf config-manager
+      ansible.builtin.shell: dnf config-manager --add-repo https://rpm.releases.hashicorp.com/fedora/hashicorp.repo
+
+    - name: install terraform
+      ansible.builtin.dnf:
+        name: terraform
+        state: latest
+        
 
 - name: install spotify
   hosts: localhost
