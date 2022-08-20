@@ -1,7 +1,7 @@
 - name: build tools installation
   hosts: localhost
   connection: local
-  become: true
+  #become: true
   become_user: root
   tasks:  
     - name: signal development tools
@@ -15,7 +15,7 @@
 - name: Install VScode
   hosts: localhost
   connection: local 
-  become: true
+  #become: true
   become_user: root
   tasks:
     - name: import key
@@ -35,7 +35,7 @@
 - name: install java8, java11
   hosts: localhost
   connection: local 
-  become: true
+  #become: true
   become_user: root
   tasks:
     - name: installation of openjdk-8
@@ -51,7 +51,7 @@
 - name: terraform install
   hosts: localhost
   connection: local 
-  become: true
+  #become: true
   become_user: root
   tasks: 
     - name: requirements install
@@ -70,7 +70,7 @@
 - name: install spotify
   hosts: localhost
   connection: local 
-  become: true
+  #become: true
   become_user: root
   tasks:
     - name: add pubkey and add to apt-key
@@ -92,7 +92,7 @@
 - name: Signal installation
   hosts: localhost
   connection: local 
-  become: true
+  #become: true
   become_user: root
   tasks:
     - name: install Signal signing key
@@ -113,7 +113,7 @@
 - name: other installations
   hosts: localhost
   connection: local 
-  become: yes
+  #become: true
   become_user: root
   tasks: 
     - name: install discord 
@@ -144,7 +144,7 @@
 - name: snap and flatpack installations
   hosts: localhost
   connection: local 
-  become: yes
+  #become: true
   become_user: root
   tasks: 
     - name: flutter installation
@@ -176,7 +176,7 @@
 - name: virtualization software
   hosts: localhost
   connection: local 
-  become: yes
+  #become: true
   become_user: root
   tasks:
     - name: kvm requirements install
