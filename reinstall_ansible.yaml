@@ -1,7 +1,7 @@
 - name: Install VScode
   hosts: localhost
   connection: local 
-  #become: true
+  become: true
   become_user: root
   tasks:
     - name: Dependencies installation
@@ -22,7 +22,7 @@
 - name: install java8, java11
   hosts: localhost
   connection: local 
-  #become: true
+  become: true
   become_user: root
   tasks:
     - name: installation of openjdk-8
@@ -38,7 +38,7 @@
 - name: install python-is-python3
   hosts: localhost
   connection: local 
-  #become: true
+  become: true
   become_user: root
   tasks:
     - name: installation of python-is-python3 package
@@ -49,7 +49,7 @@
 - name: terraform install
   hosts: localhost
   connection: local 
-  #become: true
+  become: true
   become_user: root
   tasks: 
     - name: requirements install
@@ -63,7 +63,7 @@
 - name: install spotify
   hosts: localhost
   connection: local 
-  #become: true
+  become: true
   become_user: root
   tasks:
     - name: add pubkey and add to apt-key
@@ -85,7 +85,7 @@
 - name: Signal installation
   hosts: localhost
   connection: local 
-  #become: true
+  become: true
   become_user: root
   tasks:
     - name: install Signal signing key
