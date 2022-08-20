@@ -5,7 +5,7 @@
   become_user: root
   tasks:
     - name: Dependencies installation
-      apt:
+      ansible.builtin.apt:
         update_cache: true
         name:
           - wget
@@ -14,7 +14,7 @@
         state: latest
 
     - name: update system and install code
-      apt:
+      ansible.builtin.apt:
         update_cache: true
         name: code
         state: latest
@@ -26,12 +26,12 @@
   become_user: root
   tasks:
     - name: installation of openjdk-8
-      apt:
+      ansible.builtin.apt:
         name: openjdk-8-jdk
         install_recommends: true
 
     - name: installation of openjdk-11
-      apt:
+      ansible.builtin.apt:
         name: openjdk-11-jdk
         install_recommends: true
 
@@ -42,7 +42,7 @@
   become_user: root
   tasks:
     - name: installation of python-is-python3 package
-      apt:
+      ansible.builtin.apt:
         name: python-is-python3
         state: latest
 
@@ -53,7 +53,7 @@
   become_user: root
   tasks: 
     - name: requirements install
-      apt:
+      ansible.builtin.apt:
         name: 
           - software-common-properties
           - gpg
@@ -78,7 +78,7 @@
         state: present
     
     - name: install spotify client
-      apt:
+      ansible.builtin.apt:
         name: spotify-client
         update_cache: yes
 
@@ -97,7 +97,7 @@
         echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' | sudo tee -a /etc/apt/sources.list.d/signal-xenial.list
     
     - name: install client application
-      apt: 
+      ansible.builtin.apt: 
         name: signal-desktop
         update_cache: yes
 
@@ -114,14 +114,13 @@
         deb: https://discord.com/api/download?platform=linux&format=deb
 
     - name: all installations
-      apt:
+      ansible.builtin.apt:
         update_cache: yes
         name: 
           - htop
           - steam
           - wine
           - neofetch
-          - lutris
           - keepassxc
           - qpdfview
           - nvtop
@@ -133,6 +132,8 @@
           - grsync
           - tree
           - lolcat
+          - deluge
+          - obs-studio
 
 - name: snap and flatpack installations
   hosts: localhost
@@ -141,7 +142,7 @@
   become_user: root
   tasks: 
     - name: flutter installation
-      apt: 
+      ansible.builtin.apt: 
         - curl
         - file
         - git
@@ -172,7 +173,7 @@
   become_user: root
   tasks:
     - name: kvm requirements install
-      apt:
+      ansible.builtin.apt:
         - bridge-utils
         - cpu-checker
         - libvirt-clients
@@ -181,6 +182,40 @@
         - qemu-kvm
     
     - name: virt-manager install
-      apt: 
+      ansible.builtin.apt: 
         name: virt-manager
         state: latest
+
+- name: gaming stuff installation
+  hosts: localhost
+  connection: local
+  become: yes
+  become_user: root
+  tasks:
+    - name: lutris add ppa
+      ansible.builtin.apt_repository: 
+        repo: 'ppa: lutris-team/lutris'
+    
+    - name: lutris install
+      ansible.builtin.apt: 
+        name: lutris
+        update_cache: yes
+
+    - name: steam installation
+      ansible.builtin.apt: 
+        name: steam
+    
+    - name: wine dependencies install
+      ansible.builtin.shell: dpkg --add-architecture i386
+      ansible.builtin.apt:
+        name: 
+          - libasound2-plugins:i386
+          - libsdl2-2.0-0:i386
+          - libdbus-1-3:i386
+          - libsqlite3-0:i386
+    
+    - name: wine 32 and 64 install
+      ansible.builtin.apt:
+        name: 
+          - wine64
+          - wine32
