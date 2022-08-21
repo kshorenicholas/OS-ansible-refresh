@@ -57,8 +57,6 @@
         name: 
           - software-common-properties
           - gpg
-    
-    - name: ansible ppa add
 
 - name: install spotify
   hosts: localhost
@@ -204,8 +202,10 @@
       ansible.builtin.apt: 
         name: steam
     
-    - name: wine dependencies install
+    - name: wine add architecture
       ansible.builtin.shell: dpkg --add-architecture i386
+      
+    - name: wine dependencies install
       ansible.builtin.apt:
         name: 
           - libasound2-plugins:i386
