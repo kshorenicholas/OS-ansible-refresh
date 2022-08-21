@@ -174,7 +174,6 @@
           - file
           - git
           - unzip
-          - which
           - xz-utils
           - zip
           - libglu1-mesa
@@ -182,8 +181,6 @@
     - name: snap fluttes install
       ansible.builtin.shell: |
         sudo snap install flutter --classic
-
-        flutter doctor -v
 
     - name: download and extract android studio
       ansible.builtin.unarchive:
@@ -257,7 +254,5 @@
     - name: vulkan libraries install
       ansible.builtin.apt:
         name:
-          - vulkan
-          - vulkan-utils
           - libvulkan1
           - libvulkan1:i386
