@@ -66,11 +66,26 @@
   #become: true
   become_user: root
   tasks: 
-    - name: requirements install
+    - name: dependencies download
       ansible.builtin.apt:
-        name: 
-          - software-common-properties
-          - gpg
+        name: gpg
+
+    - name: download terraform signing key and add to new keyring
+      ansible.builtin.apt_key:
+        url: https://apt.releases.hashicorp.com/gpg
+        keyring: /usr/share/keyrings/hashicorp-archive-keyring.gpg
+
+    - name: add terraform repo
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+        state: present
+
+      # E8A0 32E0 94D8 EB4E A189 D270 DA41 8C88 A321 9F7B
+    - name: update cache and install terraform
+      ansible.builtin.apt:
+        name: terraform
+        update_cache: yes
+
 
 - name: install spotify
   hosts: localhost
