@@ -115,13 +115,15 @@
   #become: true
   become_user: root
   tasks:
-    - name: install Signal signing key
-      ansible.builtin.shell: |
-        wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg
-        
-        cat signal-desktop-keyring.gpg | sudo tee -a /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
+    - name: add signal signing key
+      ansible.builtin.apt_key:
+        url: https://updates.signal.org/desktop/apt/keys.asc
+        keyring: /usr/share/keyrings/signal-desktop-keyring.gpg
 
-        echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' | sudo tee -a /etc/apt/sources.list.d/signal-xenial.list
+    - name: add signal repo
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main"
+        state: present
     
     - name: install client application
       ansible.builtin.apt: 
