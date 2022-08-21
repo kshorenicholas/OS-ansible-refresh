@@ -139,7 +139,7 @@
   become_user: root
   tasks: 
     - name: install discord 
-      ansible.builtin.apt_key:
+      ansible.builtin.apt:
         deb: https://discord.com/api/download?platform=linux&format=deb
 
     - name: all installations
