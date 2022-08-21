@@ -7,15 +7,15 @@
   connection: local 
   #become: true
   become_user: root
+  ignore_errors: yes
   tasks:
     - name: Dependencies installation
       ansible.builtin.apt:
-        update_cache: true
         name:
           - wget
           - gpg
           - apt-transport-https
-        state: latest
+        update_cache: yes
 
     - name: add Microsoft key to keyring 
       ansible.builtin.apt_key:
@@ -23,21 +23,24 @@
         keyring: /etc/apt/keyrings/packages.microsoft.gpg
 
     - name: add Microsoft VSCode to repo list 
-      ansible.builtin.apt_repository: 
-        repo: "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main"
-        state: present
+      #ansible.builtin.apt_repository: 
+      #  repo: "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main"
+      #  state: present
+      ansible.builtin.shell: sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
 
     - name: update system and install code
       ansible.builtin.apt:
         update_cache: true
         name: code
-        state: latest
+
+    - name: 
 
 - name: install java8, java11
   hosts: localhost
   connection: local 
   #become: true
   become_user: root
+  ignore_errors: yes
   tasks:
     - name: installation of openjdk-8
       ansible.builtin.apt:
@@ -92,6 +95,7 @@
   connection: local 
   #become: true
   become_user: root
+  ignore_errors: yes
   tasks:
     - name: add pubkey and add to apt-key
       ansible.builtin.apt_key:
@@ -114,6 +118,7 @@
   connection: local 
   #become: true
   become_user: root
+  ignore_errors: yes
   tasks:
     - name: add signal signing key
       ansible.builtin.apt_key:
@@ -137,6 +142,7 @@
   connection: local 
   become: yes
   become_user: root
+  ignore_errors: yes
   tasks: 
     - name: install discord 
       ansible.builtin.apt:
@@ -166,6 +172,7 @@
   connection: local 
   become: yes
   become_user: root
+  ignore_errors: yes
   tasks: 
     - name: flutter installation
       ansible.builtin.apt:
@@ -178,9 +185,9 @@
           - zip
           - libglu1-mesa
     
-    - name: snap fluttes install
+    - name: snap flutter install
       ansible.builtin.shell: |
-        sudo snap install flutter --classic
+        snap install flutter --classic
 
     - name: download and extract android studio
       ansible.builtin.unarchive:
@@ -195,6 +202,7 @@
   connection: local 
   become: yes
   become_user: root
+  ignore_errors: yes
   tasks:
     - name: kvm requirements install
       ansible.builtin.apt:
@@ -216,10 +224,11 @@
   connection: local
   become: yes
   become_user: root
+  ignore_errors: yes
   tasks:
     - name: lutris add ppa
       ansible.builtin.apt_repository: 
-        repo: 'ppa: lutris-team/lutris'
+        repo: 'ppa:lutris-team/lutris'
     
     - name: lutris install
       ansible.builtin.apt: 
