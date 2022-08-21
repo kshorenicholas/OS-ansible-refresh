@@ -17,15 +17,15 @@
           - apt-transport-https
         state: latest
 
-    - name: obtain and install key to keyring
-      ansible.builtin.shell: |
-        wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-        
-        sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
-        
-        sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
-        
-        rm -f packages.microsoft.gpg
+    - name: add Microsoft key to keyring 
+      ansible.builtin.apt_key:
+        url: https://packages.microsoft.com/keys/microsoft.asc
+        keyring: /etc/apt/keyrings/packages.microsoft.gpg
+
+    - name: add Microsoft VSCode to repo list 
+      ansible.builtin.apt_repository: 
+        repo: "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main"
+        state: present
 
     - name: update system and install code
       ansible.builtin.apt:
