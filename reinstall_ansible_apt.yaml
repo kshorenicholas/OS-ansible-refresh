@@ -118,14 +118,11 @@
         update_cache: yes
         name: 
           - htop
-          - steam
-          - wine
           - neofetch
           - keepassxc
           - qpdfview
           - nvtop
           - snapd
-          - gamemoderun
           - mangohud
           - k4dirstat
           - vlc
@@ -221,3 +218,15 @@
         name: 
           - wine64
           - wine32
+    
+    - name: gamemode install
+      ansible.builtin.apt:
+        name: gamemode
+
+    - name: vulkan libraries install
+      ansible.builtin.apt:
+        name:
+          - vulkan
+          - vulkan-utils
+          - libvulkan1
+          - libvulkan1:i386
