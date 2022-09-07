@@ -309,3 +309,30 @@
         name:
           - libvulkan1
           - libvulkan1:i386
+
+- name: latex
+  hosts: localhost
+  connection: local
+  become: yes
+  become_user: root
+  ignore_errors: yes
+  tasks:
+    - name: install latexlive-extra
+      ansible.builtin.apt:
+        name: texlive-latex-extra
+
+    - name: install texlive specifics
+      ansible.builtin.apt:
+        name: 
+          - texlive-publishers
+          - texlive-science
+
+    - name: install texlive japanese and german language package
+      ansible.builtin.apt:
+        name: 
+          - texlive-lang-german
+          - texlive-lang-japanese
+    
+    - name: latexmk for james-yu latex-workshop extension under VSCode
+      ansible.builtin.apt:
+        name: latexmk
