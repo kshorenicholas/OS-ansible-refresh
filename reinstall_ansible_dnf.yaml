@@ -88,21 +88,13 @@
   #become: true
   become_user: root
   tasks:
-    - name: add pubkey and add to apt-key
-      ansible.builtin.apt_key:
-        keyserver: keyserver.ubuntu.com 
-        id: f9a211976ed662f00e59361e5e3c45d7b312c643
-        state: present
+    - name: lpf spotify client package install
+      ansible.builtin.dnf: 
+        - name: lpf-spotify-client
+          state: present
 
-    - name: add repo to sources.list.d
-      ansible.builtin.apt_repository:
-        repo: deb http://repository.spotify.com stable non-free
-        state: present
-    
-    - name: install spotify client
-      ansible.builtin.dnf:
-        name: spotify-client
-        update_cache: yes
+    - name: lpf () update to install spotify
+      ansible.builtin.command: lpf update
 
 - name: Signal installation
   hosts: localhost
