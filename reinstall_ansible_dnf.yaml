@@ -1,3 +1,18 @@
+- name: install both rpmfusion repos 
+  hosts: localhost
+  connection: local
+  become_user: root
+  tasks: 
+    - name: rpmfusion free repo install
+      ansible.builtin.dnf:
+        name: https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ansible_distribution_release}}.noarch.rpm
+        state: present
+    
+    - name: rpmfusion non-free repo install
+      ansible.builtin.dnf: 
+        name: https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ansible_distribution_release}}.noarch.rpm
+        state: present
+
 - name: build tools installation
   hosts: localhost
   connection: local
