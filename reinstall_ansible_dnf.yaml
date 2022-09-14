@@ -93,7 +93,7 @@
         - name: lpf-spotify-client
           state: present
 
-    - name: lpf () update to install spotify
+    - name: lpf (local package factory) update to install spotify
       ansible.builtin.command: lpf update
 
 - name: Signal installation
