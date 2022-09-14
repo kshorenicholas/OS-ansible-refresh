@@ -13,6 +13,23 @@
         name: https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ansible_distribution_release}}.noarch.rpm
         state: present
 
+- name: update system to latest state and reboot system
+  hosts: localhost
+  connection: local
+  become_user: root
+  tasks:
+    - name: update system to latest
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+
+    - name: sleeping for 120 seconds
+      ansible.builtin.wait_for:
+        timeout: 120
+
+    - name: reboot system
+      ansible.builtin.reboot: 
+
 - name: build tools installation
   hosts: localhost
   connection: local
