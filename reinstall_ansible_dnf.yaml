@@ -30,6 +30,25 @@
     - name: reboot system
       ansible.builtin.reboot: 
 
+- name: nvidia drivers config 
+  hosts: localhost
+  connection: local
+  become_user: root
+  tasks: 
+    - name: install fedora workstation repo
+      ansible.builtin.dnf: 
+        name: fedora-workstation-repositories
+        state: latest
+    
+    - name: enable nvidia driver reboot
+      ansible.builtin.command: dnf config-manager --set-enabled rpmfusion-nonfree-nvidia-driver
+
+    - name: rebooting system
+      ansible.builtin.reboot:
+
+    - name: verifying addition of nvidia repo
+      ansible.builtin.command: dnf repository-packages rpmfusion-nonfree-nvidia-driver info
+
 - name: build tools installation
   hosts: localhost
   connection: local
@@ -117,7 +136,7 @@
   hosts: localhost
   connection: local 
   #become: true
-  become_user: root
+  become_user: root)
   tasks:
     - name: install Signal signing key
       ansible.builtin.shell: |
