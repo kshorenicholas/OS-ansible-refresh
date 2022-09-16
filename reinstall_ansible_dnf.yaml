@@ -205,13 +205,13 @@
           - tree
           - lolcat
 
-- name: snap and flatpack installations
+- name: flutter installation
   hosts: localhost
   connection: local 
   #become: true
   become_user: root
   tasks: 
-    - name: flutter installation
+    - name: flutter prereq installs
       ansible.builtin.dnf:
         name:  
           - curl
@@ -219,11 +219,11 @@
           - git
           - unzip
           - which
-          - xz-utils
+          - xz
           - zip
-          - libglu1-mesa
+          - mesa-libGLU
     
-    - name: snap fluttes install
+    - name: flutter installation via snap
       ansible.builtin.shell: |
         sudo snap install flutter --classic
 
@@ -259,4 +259,4 @@
       ansible.builtin.systemd:
         state: started
         name: libvirtd
-        enabled: yes
+        enabled: yes 
