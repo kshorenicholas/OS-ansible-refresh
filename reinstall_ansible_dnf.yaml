@@ -247,13 +247,19 @@
       ansible.builtin.dnf:
         name: 
           - bridge-utils
-          - cpu-checker
-          - libvirt-clients
-          - libvirt-daemon
-          - qemu 
+          - virt-install
+          - libvirt
           - qemu-kvm
       
     - name: virt-manager install
       ansible.builtin.dnf: 
         name: virt-manager
         state: latest
+
+    - name: additional virtualization modules
+      ansible.builtin.dnf:
+        name: 
+          - libvirt-devel
+          - virt-top
+          - libguestfs-tools
+          - guestfs-tools
