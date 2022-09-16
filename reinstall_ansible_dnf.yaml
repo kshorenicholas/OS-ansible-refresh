@@ -243,26 +243,17 @@
   #become: true
   become_user: root
   tasks:
-    - name: kvm requirements install
+    - name: install virtualization group
       ansible.builtin.dnf:
-        name: 
-          - bridge-utils
-          - virt-install
-          - libvirt
-          - qemu-kvm
-      
-    - name: virt-manager install
-      ansible.builtin.dnf: 
-        name: virt-manager
+        name: '@virtualization' # includes virt-install libvirt-daemon-config-network libvirt-daemon-kvm qemu-kvm virt-manager virt-viewer
         state: latest
-
-    - name: additional virtualization modules
+    
+    - name: virtualization optional packages installation
       ansible.builtin.dnf:
-        name: 
-          - libvirt-devel
-          - virt-top
+        name:
           - libguestfs-tools
-          - guestfs-tools
+          - python3-libguestfs
+          - virt-top
 
     - name: start and enable libvirtd
       ansible.builtin.systemd:
