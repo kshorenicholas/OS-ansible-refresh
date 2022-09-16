@@ -151,7 +151,30 @@
         name: signal-desktop
         update_cache: yes
 
+- name: gaming stuff
+  hosts: localhost
+  connection: local
+  become_user: root
+  tasks:
+    - name: install steam
+      ansible.builtin.dnf:
+        name: steam
+        state: latest
 
+    - name: install lutris
+      ansible.builtin.dnf:
+        name:  lutris
+        state: latest
+
+    - name: install discord
+      ansible.builtin.dnf:
+        name: discord
+        state: latest
+
+    - name: install wine
+      ansible.builtin.dnf:
+        name: wine
+        state: latest
 
 - name: other installations
   hosts: localhost
@@ -168,10 +191,8 @@
         update_cache: yes
         name: 
           - htop
-          - steam
           - wine
           - neofetch
-          - lutris
           - keepassxc
           - qpdfview
           - nvtop
