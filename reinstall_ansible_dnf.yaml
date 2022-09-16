@@ -263,3 +263,9 @@
           - virt-top
           - libguestfs-tools
           - guestfs-tools
+
+    - name: start and enable libvirtd
+      ansible.builtin.systemd:
+        state: started
+        name: libvirtd
+        enabled: yes
