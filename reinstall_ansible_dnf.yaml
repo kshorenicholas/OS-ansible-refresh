@@ -70,7 +70,7 @@
   become_user: root
   tasks:
     - name: import key
-      ansible.builtin.dnf_key:
+      ansible.builtin.rpm_key:
         state: present
         key: https://packages.microsoft.com/keys/microsoft.asc
 
@@ -126,8 +126,8 @@
   tasks:
     - name: lpf spotify client package install
       ansible.builtin.dnf: 
-        - name: lpf-spotify-client
-          state: present
+        name: lpf-spotify-client
+        state: present
 
     - name: lpf (local package factory) update to install spotify
       ansible.builtin.command: lpf update
@@ -183,8 +183,9 @@
   become_user: root
   tasks: 
     - name: install discord 
-      ansible.builtin.apt_key:
-        deb: https://discord.com/api/download?platform=linux&format=deb
+      ansible.builtin.dnf:
+        name: discord
+        state: latest
 
     - name: all installations
       ansible.builtin.dnf:
