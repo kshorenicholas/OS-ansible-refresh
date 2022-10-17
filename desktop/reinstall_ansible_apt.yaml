@@ -255,10 +255,6 @@
   become_user: root
   ignore_errors: yes
   tasks:
-    - name: lutris add ppa
-      ansible.builtin.apt_repository: 
-        repo: 'ppa:lutris-team/lutris'
-    
     - name: lutris install
       ansible.builtin.apt: 
         name: lutris
