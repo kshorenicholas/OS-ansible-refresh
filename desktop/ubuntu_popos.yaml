@@ -1,11 +1,10 @@
 # to test in linux vm, install spice-vdagent into vm
-# command to run: ansible-playbook -i localhost, -u root /home/linuxlite/Desktop/reinstall_ansible_apt.yaml 
-
+# command to run: ansible-playbook -i localhost, -u root /home/linuxlite/Desktop/reinstall_ansible_apt.yaml
 
 - name: Install VScode
   hosts: localhost
-  connection: local 
-  #become: true
+  connection: local
+  become: true
   become_user: root
   ignore_errors: yes
   tasks:
@@ -22,18 +21,18 @@
         timeout: 5
       delegate_to: localhost
 
-    - name: add Microsoft key to keyring 
+    - name: Add Microsoft key to keyring
       ansible.builtin.apt_key:
         url: https://packages.microsoft.com/keys/microsoft.asc
         keyring: /etc/apt/keyrings/packages.microsoft.gpg
 
-    - name: add Microsoft VSCode to repo list 
-      #ansible.builtin.apt_repository: 
+    - name: Add Microsoft VSCode to repo list
+      #ansible.builtin.apt_repository:
       #  repo: "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main"
       #  state: present
       ansible.builtin.shell: sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
 
-    - name: update system and install code
+    - name: Update system and install code
       ansible.builtin.apt:
         update_cache: true
         name: code
@@ -43,14 +42,14 @@
         timeout: 15
       delegate_to: localhost
 
-- name: install java8, java11
+- name: Install java8, java11
   hosts: localhost
-  connection: local 
-  #become: true
+  connection: local
+  become: true
   become_user: root
   ignore_errors: yes
   tasks:
-    - name: installation of openjdk-8
+    - name: Installation of openjdk-8
       ansible.builtin.apt:
         name: openjdk-8-jdk
         install_recommends: true
@@ -60,7 +59,7 @@
         timeout: 10
       delegate_to: localhost
 
-    - name: installation of openjdk-11
+    - name: Installation of openjdk-11
       ansible.builtin.apt:
         name: openjdk-11-jdk
         install_recommends: true
@@ -70,39 +69,39 @@
         timeout: 10
       delegate_to: localhost
 
-- name: install python-is-python3
+- name: Install python-is-python3
   hosts: localhost
-  connection: local 
-  #become: true
+  connection: local
+  become: true
   become_user: root
   tasks:
-    - name: installation of python-is-python3 package
+    - name: Installation of python-is-python3 package
       ansible.builtin.apt:
         name: python-is-python3
         state: latest
 
-- name: terraform install
+- name: Terraform install
   hosts: localhost
-  connection: local 
-  #become: true
+  connection: local
+  become: true
   become_user: root
-  tasks: 
-    - name: dependencies download
+  tasks:
+    - name: Dependencies download
       ansible.builtin.apt:
         name: gpg
 
-    - name: download terraform signing key and add to new keyring
+    - name: Download terraform signing key and add to new keyring
       ansible.builtin.apt_key:
         url: https://apt.releases.hashicorp.com/gpg
         keyring: /usr/share/keyrings/hashicorp-archive-keyring.gpg
 
-    - name: add terraform repo
+    - name: Add terraform repo
       ansible.builtin.apt_repository:
         repo: "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
         state: present
 
       # E8A0 32E0 94D8 EB4E A189 D270 DA41 8C88 A321 9F7B
-    - name: update cache and install terraform
+    - name: Update cache and install terraform
       ansible.builtin.apt:
         name: terraform
         update_cache: yes
@@ -112,25 +111,25 @@
         timeout: 15
       delegate_to: localhost
 
-- name: install spotify
+- name: Install spotify
   hosts: localhost
-  connection: local 
-  #become: true
+  connection: local
+  become: true
   become_user: root
   ignore_errors: yes
   tasks:
-    - name: add pubkey and add to apt-key
+    - name: Add pubkey and add to apt-key
       ansible.builtin.apt_key:
-        keyserver: keyserver.ubuntu.com 
+        keyserver: keyserver.ubuntu.com
         id: f9a211976ed662f00e59361e5e3c45d7b312c643
         state: present
 
-    - name: add repo to sources.list.d
+    - name: Add repo to sources.list.d
       ansible.builtin.apt_repository:
         repo: deb http://repository.spotify.com stable non-free
         state: present
-    
-    - name: install spotify client
+  
+    - name: Install spotify client
       ansible.builtin.apt:
         name: spotify-client
         update_cache: yes
@@ -142,23 +141,23 @@
 
 - name: Signal installation
   hosts: localhost
-  connection: local 
-  #become: true
+  connection: local
+  become: true
   become_user: root
   ignore_errors: yes
   tasks:
-    - name: add signal signing key
+    - name: Add signal signing key
       ansible.builtin.apt_key:
         url: https://updates.signal.org/desktop/apt/keys.asc
         keyring: /usr/share/keyrings/signal-desktop-keyring.gpg
 
-    - name: add signal repo
+    - name: Add signal repo
       ansible.builtin.apt_repository:
         repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main"
         state: present
-    
-    - name: install signal client application
-      ansible.builtin.apt: 
+
+    - name: Install signal client application
+      ansible.builtin.apt:
         name: signal-desktop
         update_cache: yes
 
@@ -167,21 +166,21 @@
         timeout: 15
       delegate_to: localhost
 
-- name: other installations
+- name: Other installations
   hosts: localhost
-  connection: local 
+  connection: local
   become: yes
   become_user: root
   ignore_errors: yes
-  tasks: 
-    - name: install discord 
+  tasks:
+    - name: Install discord 
       ansible.builtin.apt:
         deb: https://discord.com/api/download?platform=linux&format=deb
 
-    - name: all installations
+    - name: All installations
       ansible.builtin.apt:
         update_cache: yes
-        name: 
+        name:
           - htop
           - neofetch
           - keepassxc
@@ -199,14 +198,14 @@
 
 - name: snap and flatpack installations
   hosts: localhost
-  connection: local 
+  connection: local
   become: yes
   become_user: root
   ignore_errors: yes
-  tasks: 
-    - name: flutter installation
+  tasks:
+    - name: Flutter installation
       ansible.builtin.apt:
-        name: 
+        name:
           - curl
           - file
           - git
@@ -214,8 +213,8 @@
           - xz-utils
           - zip
           - libglu1-mesa
-    
-    - name: snap flutter install
+
+    - name: Snap flutter install
       ansible.builtin.shell: |
         snap install flutter --classic
 
@@ -228,23 +227,23 @@
 
 - name: virtualization software
   hosts: localhost
-  connection: local 
+  connection: local
   become: yes
   become_user: root
   ignore_errors: yes
   tasks:
     - name: kvm requirements install
       ansible.builtin.apt:
-        name: 
+        name:
           - bridge-utils
           - cpu-checker
           - libvirt-clients
           - libvirt-daemon
-          - qemu 
+          - qemu
           - qemu-kvm
-    
+
     - name: virt-manager install
-      ansible.builtin.apt: 
+      ansible.builtin.apt:
         name: virt-manager
         state: latest
 
@@ -255,8 +254,8 @@
   become_user: root
   ignore_errors: yes
   tasks:
-    - name: lutris install
-      ansible.builtin.apt: 
+    - name: Lutris install
+      ansible.builtin.apt:
         name: lutris
         update_cache: yes
 
@@ -265,70 +264,70 @@
         timeout: 15
       delegate_to: localhost
 
-    - name: steam installation
-      ansible.builtin.apt: 
+    - name: Steam installation
+      ansible.builtin.apt:
         name: steam
 
     - name: Sleep for 15 seconds and continue with play
       ansible.builtin.wait_for:
         timeout: 15
       delegate_to: localhost
-    
-    - name: wine add architecture
+
+    - name: Wine add architecture
       ansible.builtin.shell: dpkg --add-architecture i386
-      
-    - name: wine dependencies install
+
+    - name: Wine dependencies install
       ansible.builtin.apt:
-        name: 
+        name:
           - libasound2-plugins:i386
           - libsdl2-2.0-0:i386
           - libdbus-1-3:i386
           - libsqlite3-0:i386
-    
-    - name: wine 32 and 64 install
+
+    - name: Wine 32 and 64 install
       ansible.builtin.apt:
-        name: 
+        name:
           - wine64
           - wine32
-    
+
     - name: Sleep for 10 seconds and continue with play
       ansible.builtin.wait_for:
         timeout: 10
       delegate_to: localhost
 
-    - name: gamemode install
+    - name: Gamemode install
       ansible.builtin.apt:
         name: gamemode
 
-    - name: vulkan libraries install
+    - name: Vulkan libraries install
       ansible.builtin.apt:
         name:
           - libvulkan1
           - libvulkan1:i386
 
-- name: latex
+- name: Latex
   hosts: localhost
   connection: local
   become: yes
   become_user: root
   ignore_errors: yes
   tasks:
-    - name: install latexlive-extra
+    - name: Install latexlive-extra
       ansible.builtin.apt:
         name: texlive-latex-extra
 
-    - name: install texlive specifics
+    - name: Install texlive specifics
       ansible.builtin.apt:
-        name: 
+        name:
           - texlive-publishers
           - texlive-science
 
-    - name: install texlive japanese and german language package
+    - name: Install texlive japanese and german language package
       ansible.builtin.apt:
-        name: 
+        name:
           - texlive-lang-german
           - texlive-lang-japanese
-    
-    - name: latexmk for james-yu latex-workshop extension under VSCode
+
+    - name: Latexmk for james-yu latex-workshop extension under VSCode
       ansible.builtin.apt:
         name: latexmk
